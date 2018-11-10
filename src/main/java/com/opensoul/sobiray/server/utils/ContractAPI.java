@@ -30,6 +30,8 @@ public class ContractAPI {
     public Credentials getCredentials() {
         Credentials credentials = null;
         try {
+            log.info("walletSource: {}", System.getProperty("walletSource", System.getenv("walletSource")));
+
             credentials = WalletUtils.loadCredentials(System.getProperty("walletPassword", System.getenv("walletPassword")),
                     System.getProperty("walletSource", System.getenv("walletSource")));
             log.info("Credentials are loaded: {}", credentials.getAddress());
