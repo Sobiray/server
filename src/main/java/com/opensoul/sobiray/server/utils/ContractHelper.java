@@ -23,11 +23,22 @@ public class ContractHelper {
     }
 
     public List<String> getEventList() {
+//        try {
+////            TransactionReceipt transactionReceipt = contract.getEvent().send();
+//            return true;
+//        } catch (Exception e) {
+//            return false;
+//        }
         return null;
     }
 
-    public boolean createNewPayment(String from, String to, BigDecimal amount) {
-        return false;
+    public boolean createNewPayment(String eventId, String userId, String transactionId) {
+        try {
+//            TransactionReceipt transactionReceipt = contract.addGuest(eventId, userId, transactionId).send();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public boolean createNewEvent(String eventId, BigInteger successSum, BigInteger maxGuestsCount,

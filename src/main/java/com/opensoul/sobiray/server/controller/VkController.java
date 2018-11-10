@@ -27,10 +27,10 @@ public class VkController {
     }
 
     @RequestMapping("/payment")
-    public boolean payment(@RequestParam(value = "from") String from,
-                           @RequestParam(value = "to") String to,
-                           @RequestParam(value = "amount") BigDecimal amount) {
-        return contractHelper.createNewPayment(from, to, amount);
+    public boolean payment(@RequestParam(value = "eventId") String eventId,
+                           @RequestParam(value = "userId") String userId,
+                           @RequestParam(value = "transactionId") String transactionId) {
+        return contractHelper.createNewPayment(eventId, userId, transactionId);
     }
 
     @RequestMapping("/events")
