@@ -25,31 +25,8 @@ public class VkController {
         return "{\"result\":\"" + "Hello, " + name + "!" + "\"}";
     }
 
-//    @RequestMapping("/events")
-//    public String events() {
-//        if (eventList == null) {
-//            eventList = contractHelper.getEventList();
-//            eventList = Stream.of("2", "fd", "sfs").collect(Collectors.toList());
-//        }
-//        StringBuffer result = new StringBuffer("[");
-//        int i = 0;
-//        for (String event : eventList) {
-//            result.append(i++ == 0 ? "{" : ",{");
-//            result.append(" \"id\": 1,\n" +
-//                    "    \"preorderPrice\": 150,\n" +
-//                    "    \"price\": 300,\n" +
-//                    "    \"deadline\": \"27.01.2018\",\n" +
-//                    "    \"date\": \"15.02.2018\",\n" +
-//                    "    \"requiredMoney\": 15000,\n" +
-//                    "    \"maxGuests\": 50");
-//            result.append("}");
-//        }
-//        result.append("]");
-//        return result.toString();
-//    }
-
-    @RequestMapping(value = "/event", method = RequestMethod.GET)
-    public String event(@RequestParam(value = "eventId") String eventId) {
+    @RequestMapping(value = "/eventById", method = RequestMethod.GET)
+    public String eventById(@RequestParam(value = "eventId") String eventId) {
         if (StringUtils.isNoneEmpty(eventId)) {
             Event e = contractHelper.getEventById(eventId);
             if (e != null) {
