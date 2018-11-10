@@ -30,8 +30,8 @@ public class ContractAPI {
     public Credentials getCredentials() {
         Credentials credentials = null;
         try {
-            credentials = WalletUtils.loadCredentials(System.getProperty("walletPassword", ""),
-                    System.getProperty("walletSource", ""));
+            credentials = WalletUtils.loadCredentials(System.getProperty("walletPassword", System.getenv("walletPassword")),
+                    System.getProperty("walletSource", System.getenv("walletSource")));
             log.info("Credentials are loaded: {}", credentials.getAddress());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -42,8 +42,8 @@ public class ContractAPI {
     public Sobiray getContract() {
         Sobiray contract = null;
         try {
-            log.info("Trying to load contract {}", System.getProperty("contractAddress", ""));
-            contract = Sobiray.load(System.getProperty("contractAddress", ""),
+            log.info("Trying to load contract {}", System.getProperty("contractAddress", System.getenv("contractAddress")));
+            contract = Sobiray.load(System.getProperty("contractAddress", System.getenv("contractAddress")),
                     getWeb3j(), getCredentials(),
                     GAS_PRICE, GAS_LIMIT);
             log.info("Contract is loaded");
