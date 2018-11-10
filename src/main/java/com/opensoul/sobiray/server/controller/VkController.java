@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 public class VkController {
@@ -60,16 +59,11 @@ public class VkController {
         return null;
     }
 
-//    @RequestMapping(value = "/events", method = RequestMethod.GET)
-//    public String event() {
-//        if (StringUtils.isNoneEmpty(eventId)) {
-//            Event e = contractHelper.getEventById(eventId);
-//            if (e != null) {
-//                return e.toString();
-//            }
-//        }
-//        return null;
-//    }
+    @RequestMapping(value = "/events", method = RequestMethod.GET)
+    public String events() {
+        List<Event> events = contractHelper.getAllEvents();
+        return "[" + events.stream().map(e -> e.toString()).collect(Collectors.joining(",")) + "]";
+    }
 
     @RequestMapping(value = "/event", method = RequestMethod.PUT)
     public boolean event(@RequestParam(value = "eventId") String eventId,

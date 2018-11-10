@@ -50,12 +50,37 @@ contract Sobiray {
             }));
     }
 
-    function getEventIds() view public returns (string[]){
+    function getEventIds() view public returns (string[] ids){
         string[] eventIds;
         for (uint j = 0; j < events.length; j++) {
             eventIds.push(events[j].eventId);
         }
         return eventIds;
+    }
+
+    function getEventsLength() view public returns (uint eventLength){
+        return events.length;
+    }
+
+    function getEventByNum(uint eventNum) view public returns (EVENT_STATUS status,
+        string eventId,
+        uint successSum,
+        uint currentSum,
+        uint maxGuestsCount,
+        uint presalePrice,
+        uint salePrice,
+        uint256 fundingDeadline,
+        uint256 eventDate){
+        Event memory e = events[eventNum];
+        return (e.status,
+        e.eventId,
+        e.successSum,
+        e.currentSum,
+        e.maxGuestsCount,
+        e.presalePrice,
+        e.salePrice,
+        e.fundingDeadline,
+        e.eventDate);
     }
 
 
@@ -205,7 +230,7 @@ contract Sobiray {
                 {eventId : eventId,
                 guestId : guestId,
                 payDate : 0,
-                transactionId: transactionId
+                transactionId : transactionId
                 }
             )
         );
@@ -213,10 +238,10 @@ contract Sobiray {
 
 
     function getGuest(string eventId, string guestId) public view returns
-                                                           (string _guestId,
-                                                            string _eventId,
-                                                            uint256 payDate,
-                                                            string transactionId) {
+    (string _guestId,
+        string _eventId,
+        uint256 payDate,
+        string transactionId) {
         Guest[] memory guests_ = guests[eventId];
         for (uint i = 0; i < guests_.length; i++) {
             if (keccak256(guests_[i].guestId) == keccak256(guestId)) {

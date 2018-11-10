@@ -45,10 +45,10 @@ public class ContractHelper {
     public List<Event> getAllEvents() {
         List<Event> events = new ArrayList<>();
         try {
-            List<String> eventIds = contract.getEventIds().send();
-            if (eventIds != null && eventIds.size() > 0) {
-                for (String id : eventIds) {
-                    events.add(new Event(contract.getEvent(id).send()));
+            BigInteger eventsLength = contract.getEventsLength().send();
+            if (eventsLength != null && eventsLength.compareTo(BigInteger.ZERO) > 0) {
+                for (int i = 0; i < eventsLength.intValue(); i++) {
+                    events.add(new Event(contract.getEventByNum(BigInteger.valueOf(i)).send()));
                 }
             }
             return events;
