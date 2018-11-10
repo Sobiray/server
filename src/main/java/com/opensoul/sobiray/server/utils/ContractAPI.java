@@ -42,6 +42,7 @@ public class ContractAPI {
     public Sobiray getContract() {
         Sobiray contract = null;
         try {
+            log.info("Trying to load contract {}", System.getProperty("contractAddress", ""));
             contract = Sobiray.load(System.getProperty("contractAddress", ""),
                     getWeb3j(), getCredentials(),
                     GAS_PRICE, GAS_LIMIT);
