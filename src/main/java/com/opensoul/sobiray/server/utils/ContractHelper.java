@@ -1,13 +1,13 @@
 package com.opensoul.sobiray.server.utils;
 
 import com.opensoul.sobiray.server.contract.api.Sobiray;
+import com.opensoul.sobiray.server.model.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContractHelper {
@@ -32,11 +32,38 @@ public class ContractHelper {
         return null;
     }
 
+    public Event getEventById(String eventId) {
+        try {
+            return new Event(contract.getEvent(eventId).send());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
+    }
+
+
+    public List<Event> getAllEvents() {
+        List<Event> events = new ArrayList<>();
+        try {
+            List<String> eventIds = contract.getEventIds().send();
+            if (eventIds != null && eventIds.size() > 0) {
+                for (String id : eventIds) {
+                    events.add(new Event(contract.getEvent(id).send()));
+                }
+            }
+            return events;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
+    }
+
     public boolean createNewPayment(String eventId, String userId, String transactionId) {
         try {
-//            TransactionReceipt transactionReceipt = contract.addGuest(eventId, userId, transactionId).send();
+            TransactionReceipt transactionReceipt = contract.addGuest(eventId, userId, transactionId).send();
             return true;
         } catch (Exception e) {
+            log.error(e.getMessage());
             return false;
         }
     }
@@ -48,6 +75,7 @@ public class ContractHelper {
                     presalePrice, salePrice, fundingDeadline, eventDate).send();
             return true;
         } catch (Exception e) {
+            log.error(e.getMessage());
             return false;
         }
     }
