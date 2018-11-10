@@ -32,7 +32,7 @@ public class ContractAPI {
         try {
             credentials = WalletUtils.loadCredentials(System.getProperty("walletPassword", ""),
                     System.getProperty("walletSource", ""));
-            log.info("Credentials are loaded");
+            log.info("Credentials are loaded: {}", credentials.getAddress());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
