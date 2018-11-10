@@ -30,10 +30,11 @@ public class ContractAPI {
     public Credentials getCredentials() {
         Credentials credentials = null;
         try {
-            log.info("walletSource: {}", System.getProperty("walletSource", System.getenv("walletSource")));
+            String walletSource = System.getProperty("walletSource", System.getenv("walletSource"));
+            String walletPassword = System.getProperty("walletPassword", System.getenv("walletPassword"));
+            log.info("walletSource: {}", walletSource);
 
-            credentials = WalletUtils.loadCredentials(System.getProperty("walletPassword", System.getenv("walletPassword")),
-                    System.getProperty("walletSource", System.getenv("walletSource")));
+            credentials = WalletUtils.loadCredentials(walletPassword, walletSource);
             log.info("Credentials are loaded: {}", credentials.getAddress());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
