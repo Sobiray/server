@@ -9,6 +9,7 @@ contract Sobiray {
         string guestId;
         string eventId;
         uint256 payDate;
+        string transactionId;
     }
 
     struct Event {
@@ -49,6 +50,14 @@ contract Sobiray {
             }));
     }
 
+    function getEventIds() view public returns (string[]){
+        string[] eventIds;
+        for (uint j = 0; j < events.length; j++) {
+            eventIds.push(events[j].eventId);
+        }
+        return eventIds;
+    }
+
 
     function getEvent(string evId) public view returns (EVENT_STATUS status,
         string eventId,
@@ -71,6 +80,22 @@ contract Sobiray {
                 e.salePrice,
                 e.fundingDeadline,
                 e.eventDate);
+            }
+        }
+    }
+
+    function getEventPrices(string evId) public view returns (
+        string eventId,
+        uint presalePrice,
+        uint salePrice)
+    {
+        for (uint i = 0; i < events.length; i++) {
+            if (keccak256(events[i].eventId) == keccak256(evId)) {
+                Event memory e = events[i];
+                return (
+                e.eventId,
+                e.presalePrice,
+                e.salePrice);
             }
         }
     }
@@ -173,15 +198,35 @@ contract Sobiray {
 
     function addGuest(
         string eventId,
-        string guestId)
+        string guestId,
+        string transactionId)
     public {
         guests[eventId].push(Guest(
                 {eventId : eventId,
                 guestId : guestId,
-                payDate : 0
+                payDate : 0,
+                transactionId: transactionId
                 }
             )
         );
+    }
+
+
+    function getGuest(string eventId, string guestId) public view returns
+                                                           (string _guestId,
+                                                            string _eventId,
+                                                            uint256 payDate,
+                                                            string transactionId) {
+        Guest[] memory guests_ = guests[eventId];
+        for (uint i = 0; i < guests_.length; i++) {
+            if (keccak256(guests_[i].guestId) == keccak256(guestId)) {
+                Guest memory g = guests_[i];
+                return (g.guestId,
+                g.eventId,
+                g.payDate,
+                g.transactionId);
+            }
+        }
     }
 
     function getEventGuestsIds(string eventId) view public returns (string[]){
@@ -203,15 +248,19 @@ contract Sobiray {
         }
     }
 
-    function guestPaid(string eventId, string guestId, uint sum) public {
+    function guestPaid(string eventId, string guestId) public {
+        uint presalePrice;
+        uint salePrice;
+        (eventId, presalePrice, salePrice) = getEventPrices(eventId);
+
         EVENT_STATUS status = getEventStatus(eventId);
         setGuestPayDate(eventId, guestId, now);
         checkEndPresale(eventId);
         if (status == EVENT_STATUS.FUNDRASING) {
-            changeEventCurrentSum(eventId, sum);
+            changeEventCurrentSum(eventId, presalePrice);
         }
         if (status == EVENT_STATUS.SUCCESS) {
-            changeEventCurrentSum(eventId, sum);
+            changeEventCurrentSum(eventId, salePrice);
         }
     }
 }
