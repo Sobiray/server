@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,6 +19,7 @@ import java.util.stream.Stream;
 public class VkController {
 
     private List<String> eventList = null;
+    private ContractHelper contractHelper = new ContractHelper();
 
     @RequestMapping("/hi")
     public String hi(@RequestParam(value = "name", defaultValue = "World") String name) {
@@ -26,13 +30,13 @@ public class VkController {
     public boolean payment(@RequestParam(value = "from") String from,
                            @RequestParam(value = "to") String to,
                            @RequestParam(value = "amount") BigDecimal amount) {
-        return ContractHelper.createNewPayment(from, to, amount);
+        return contractHelper.createNewPayment(from, to, amount);
     }
 
     @RequestMapping("/events")
     public String events() {
         if (eventList == null) {
-            eventList = ContractHelper.getEventList();
+            eventList = contractHelper.getEventList();
             eventList = Stream.of("2", "fd", "sfs").collect(Collectors.toList());
         }
         StringBuffer result = new StringBuffer("[");
@@ -54,11 +58,14 @@ public class VkController {
 
     @RequestMapping("/event")
     public boolean event(@RequestParam(value = "eventId") String eventId,
-                         @RequestParam(value = "successSum") BigDecimal successSum,
-                         @RequestParam(value = "maxGuestsCount") int maxGuestsCount,
-                         @RequestParam(value = "presalePrice") BigDecimal presalePrice,
-                         @RequestParam(value = "salePrice") BigDecimal salePrice,
-                         @RequestParam(value = "lastPresaleDate") LocalDateTime lastPresaleDate) {
-        return ContractHelper.createNewEvent(eventId, successSum, maxGuestsCount, presalePrice, salePrice, lastPresaleDate);
+                         @RequestParam(value = "successSum") BigInteger successSum,
+                         @RequestParam(value = "maxGuestsCount") BigInteger maxGuestsCount,
+                         @RequestParam(value = "presalePrice") BigInteger presalePrice,
+                         @RequestParam(value = "salePrice") BigInteger salePrice,
+                         @RequestParam(value = "fundingDeadline") String fundingDeadline,
+                         @RequestParam(value = "eventDate") String eventDate
+                         ) {
+        return contractHelper.createNewEvent(eventId, successSum, maxGuestsCount, presalePrice, salePrice,
+                BigInteger.valueOf(LocalDate.parse(fundingDeadline).toEpochDay()), BigInteger.valueOf(LocalDate.parse(eventDate).toEpochDay()));
     }
 }
