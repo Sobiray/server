@@ -51,13 +51,13 @@ public class ContractHelper {
         }
     }
 
-    public boolean createNewPayment(String eventId, String userId, String transactionId) {
+    public String createNewPayment(String eventId, String userId, String transactionId) {
         try {
             TransactionReceipt transactionReceipt = contract.addGuest(eventId, userId, transactionId).send();
-            return true;
+            return transactionReceipt.getTransactionHash();
         } catch (Exception e) {
             log.error(e.getMessage());
-            return false;
+            return null;
         }
     }
 
@@ -74,15 +74,15 @@ public class ContractHelper {
         return eventGuests;
     }
 
-    public boolean createNewEvent(String eventId, BigInteger successSum, BigInteger maxGuestsCount,
+    public String createNewEvent(String eventId, BigInteger successSum, BigInteger maxGuestsCount,
                                   BigInteger presalePrice, BigInteger salePrice, BigInteger fundingDeadline, BigInteger eventDate) {
         try {
             TransactionReceipt transactionReceipt = contract.addEvent(eventId, successSum, maxGuestsCount,
                     presalePrice, salePrice, fundingDeadline, eventDate).send();
-            return true;
+            return transactionReceipt.getTransactionHash();
         } catch (Exception e) {
             log.error(e.getMessage());
-            return false;
+            return null;
         }
     }
 }

@@ -54,17 +54,17 @@ public class VkController {
     }
 
     @RequestMapping(value = "/event")
-    public boolean event(@RequestParam(value = "eventId") String eventId,
-                         @RequestParam(value = "successSum") BigInteger successSum,
-                         @RequestParam(value = "maxGuestsCount") BigInteger maxGuestsCount,
-                         @RequestParam(value = "presalePrice") BigInteger presalePrice,
-                         @RequestParam(value = "salePrice") BigInteger salePrice,
-                         @RequestParam(value = "fundingDeadline") String fundingDeadline,
-                         @RequestParam(value = "eventDate") String eventDate
+    public String event(@RequestParam(value = "eventId") String eventId,
+                        @RequestParam(value = "successSum") BigInteger successSum,
+                        @RequestParam(value = "maxGuestsCount") BigInteger maxGuestsCount,
+                        @RequestParam(value = "presalePrice") BigInteger presalePrice,
+                        @RequestParam(value = "salePrice") BigInteger salePrice,
+                        @RequestParam(value = "fundingDeadline") String fundingDeadline,
+                        @RequestParam(value = "eventDate") String eventDate
     ) {
         log.info("Calling /event. Input params: eventId={}, successSum={}, maxGuestsCount={}, presalePrice={}, salePrice={}, fundingDeadline={}, eventDate={}",
                 eventId, successSum, maxGuestsCount, presalePrice, salePrice, fundingDeadline, eventDate);
-        boolean res = contractHelper.createNewEvent(eventId, successSum, maxGuestsCount, presalePrice, salePrice,
+        String res = contractHelper.createNewEvent(eventId, successSum, maxGuestsCount, presalePrice, salePrice,
                 BigInteger.valueOf(LocalDate.parse(fundingDeadline).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()),
                 BigInteger.valueOf(LocalDate.parse(eventDate).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
         log.info("Method /event returned {}", res);
@@ -72,12 +72,12 @@ public class VkController {
     }
 
     @RequestMapping(value = "/payment")
-    public boolean payment(@RequestParam(value = "eventId") String eventId,
-                           @RequestParam(value = "userId") String userId,
-                           @RequestParam(value = "transactionId") String transactionId) {
+    public String payment(@RequestParam(value = "eventId") String eventId,
+                          @RequestParam(value = "userId") String userId,
+                          @RequestParam(value = "transactionId") String transactionId) {
         log.info("Calling /payment. Input params: eventId={}, userId={}, transactionId={}",
                 eventId, userId, transactionId);
-        boolean res = contractHelper.createNewPayment(eventId, userId, transactionId);
+        String res = contractHelper.createNewPayment(eventId, userId, transactionId);
         log.info("Method /payment returned {}", res);
         return res;
     }
