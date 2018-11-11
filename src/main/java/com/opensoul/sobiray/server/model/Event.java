@@ -88,14 +88,14 @@ public class Event {
     public String toString() {
         return "{" +
                 "    \"eventId\": \"" + eventId + "\"," +
-                "    \"eventStatus\": " + eventStatus + "," +
+                "    \"eventStatus\": \"" + eventStatus + "\"," +
                 "    \"successSum\": " + successSum + "," +
                 "    \"currentSum=\": " + currentSum + "," +
                 "    \"maxGuestsCount\": " + maxGuestsCount + "," +
                 "    \"presalePrice\": " + presalePrice + "," +
                 "    \"salePrice\": " + salePrice + "," +
-                "    \"fundingDeadline\": " + fundingDeadline + "," +
-                "    \"eventDate\": " + eventDate + "," +
+                "    \"fundingDeadline\": \"" + fundingDeadline + "\"," +
+                "    \"eventDate\": \"" + eventDate + "\"," +
                 "    \"guests\": [" + guests.stream().map(g -> "\"" + g + "\"").collect(Collectors.joining(", ")) + "]" +
                 "}";
     }
