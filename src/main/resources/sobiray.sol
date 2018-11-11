@@ -254,13 +254,14 @@ contract Sobiray {
         }
     }
 
-    function getEventGuestsIds(string eventId) view public returns (string[]){
+    function getEventGuestsLength(string eventId) view public returns (uint){
         Guest[] memory guests_ = guests[eventId];
-        string[] storage guestsIds;
-        for (uint j = 0; j < guests_.length; j++) {
-            guestsIds.push(guests_[j].guestId);
-        }
-        return guestsIds;
+        return guests_.length;
+    }
+
+    function getEventGuestsIds(string eventId, uint id) view public returns (string){
+        Guest[] memory guests_ = guests[eventId];
+        return guests_[id].guestId;
     }
 
     function setGuestPayDate(string eventId, string guestId, uint256 date) private {

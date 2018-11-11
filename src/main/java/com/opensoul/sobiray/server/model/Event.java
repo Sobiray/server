@@ -36,6 +36,10 @@ public class Event {
     }
 
     public Event(Tuple9<BigInteger, String, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger> contractRes) {
+        this(contractRes, null);
+    }
+
+    public Event(Tuple9<BigInteger, String, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger> contractRes, List<String> guests) {
         this.eventId = contractRes.getValue2();
         this.successSum = contractRes.getValue3();
         this.currentSum = contractRes.getValue4();
@@ -45,7 +49,7 @@ public class Event {
         this.fundingDeadline = Instant.ofEpochMilli(Long.valueOf(contractRes.getValue8().toString())).atOffset(ZoneOffset.UTC).toLocalDate();
         this.eventDate = Instant.ofEpochMilli(Long.valueOf(contractRes.getValue9().toString())).atOffset(ZoneOffset.UTC).toLocalDate();
         this.eventStatus = EventStatus.byId(contractRes.getValue1().intValue());
-        this.guests = new ArrayList<>();
+        this.guests = guests == null ? new ArrayList<>() : guests;
     }
 
     public EventStatus getEventStatus() {
@@ -84,6 +88,10 @@ public class Event {
         return guests;
     }
 
+    public void setGuests(List<String> guests) {
+        this.guests = guests;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -96,7 +104,7 @@ public class Event {
                 "    \"salePrice\": " + salePrice + "," +
                 "    \"fundingDeadline\": " + fundingDeadline + "," +
                 "    \"eventDate\": " + eventDate + "," +
-                "    \"guests\": [" + guests.stream().map(g -> "\"" + g + "\"").collect(Collectors.joining(", ")) + "]" +
+                "    \"guests\": [" + (guests == null ? "": guests.stream().map(g -> "\"" + g + "\"").collect(Collectors.joining(", "))) + "]" +
                 "}";
     }
 }

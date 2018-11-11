@@ -22,19 +22,10 @@ public class ContractHelper {
         log.info("Contract {} is loaded", contract.getContractAddress());
     }
 
-    public List<String> getEventList() {
-//        try {
-////            TransactionReceipt transactionReceipt = contract.getEvent().send();
-//            return true;
-//        } catch (Exception e) {
-//            return false;
-//        }
-        return null;
-    }
 
     public Event getEventById(String eventId) {
         try {
-            return new Event(contract.getEvent(eventId).send());
+            return new Event(contract.getEvent(eventId).send(), getEventGuests(eventId));
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
@@ -48,7 +39,9 @@ public class ContractHelper {
             BigInteger eventsLength = contract.getEventsLength().send();
             if (eventsLength != null && eventsLength.compareTo(BigInteger.ZERO) > 0) {
                 for (int i = 0; i < eventsLength.intValue(); i++) {
-                    events.add(new Event(contract.getEventByNum(BigInteger.valueOf(i)).send()));
+                    Event e = new Event(contract.getEventByNum(BigInteger.valueOf(i)).send());
+                    e.setGuests(getEventGuests(e.getEventId()));
+                    events.add(e);
                 }
             }
             return events;
@@ -68,18 +61,18 @@ public class ContractHelper {
         }
     }
 
-//    private boolean getEventGuests(String eventId) {
-//        try {
-//            List<String> guests = contract.getEventGuestsIds(eventId).send();
-//            if (guests == null || guests.size() == 0){
-//                return new List<String>()
-//            }
-//            return guests;
-//        } catch (Exception e) {
-//            log.error(e.getMessage());
-//        }
-//        return null;
-//    }
+    private List<String> getEventGuests(String eventId) {
+        List<String> eventGuests = new ArrayList<>();
+        try {
+            int n = contract.getEventGuestsLength(eventId).send().intValue();
+            for (int i = 0; i < n; i++)
+                eventGuests.add(contract.getEventGuestsIds(eventId, BigInteger.valueOf(i)).send());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
+        return eventGuests;
+    }
 
     public boolean createNewEvent(String eventId, BigInteger successSum, BigInteger maxGuestsCount,
                                   BigInteger presalePrice, BigInteger salePrice, BigInteger fundingDeadline, BigInteger eventDate) {
