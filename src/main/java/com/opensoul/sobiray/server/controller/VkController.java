@@ -5,10 +5,7 @@ import com.opensoul.sobiray.server.utils.ContractHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -40,6 +37,7 @@ public class VkController {
         return null;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/events", method = RequestMethod.GET)
     public String events() {
         log.info("Calling /events. No input params");
