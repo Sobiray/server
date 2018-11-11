@@ -96,15 +96,15 @@ public class Event {
     public String toString() {
         return "{" +
                 "    \"eventId\": \"" + eventId + "\"," +
-                "    \"eventStatus\": " + eventStatus + "," +
+                "    \"eventStatus\": \"" + eventStatus + "\"," +
                 "    \"successSum\": " + successSum + "," +
                 "    \"currentSum=\": " + currentSum + "," +
                 "    \"maxGuestsCount\": " + maxGuestsCount + "," +
                 "    \"presalePrice\": " + presalePrice + "," +
                 "    \"salePrice\": " + salePrice + "," +
-                "    \"fundingDeadline\": " + fundingDeadline + "," +
-                "    \"eventDate\": " + eventDate + "," +
-                "    \"guests\": [" + (guests == null ? "": guests.stream().map(g -> "\"" + g + "\"").collect(Collectors.joining(", "))) + "]" +
+                "    \"fundingDeadline\": \"" + fundingDeadline + "\"," +
+                "    \"eventDate\": \"" + eventDate + "\"," +
+                "    \"guests\": [" + (guests == null ? "" : guests.stream().map(g -> "\"" + g + "\"").collect(Collectors.joining(", "))) + "]" +
                 "}";
     }
 }
