@@ -8,8 +8,8 @@ import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
 
-import static org.web3j.tx.gas.DefaultGasProvider.GAS_LIMIT;
-import static org.web3j.tx.gas.DefaultGasProvider.GAS_PRICE;
+import static org.web3j.tx.Contract.GAS_LIMIT;
+import static org.web3j.tx.ManagedTransaction.GAS_PRICE;
 
 public class ContractAPI {
     private static final Logger log = LoggerFactory.getLogger(ContractAPI.class);
