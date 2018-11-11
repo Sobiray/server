@@ -25,7 +25,9 @@ public class VkController {
     @RequestMapping("/hi")
     public String hi(@RequestParam(value = "name", defaultValue = "World") String name) {
         log.info("Calling /hi. Input params: name={}", name);
-        return "{\"result\":\"" + "Hello, " + name + "!" + "\"}";
+        String res = "{\"result\":\"" + "Hello, " + name + "!" + "\"}";
+        log.info("Method /hi returned {}", res);
+        return res;
     }
 
     @RequestMapping(value = "/eventById", method = RequestMethod.GET)
@@ -34,9 +36,11 @@ public class VkController {
         if (StringUtils.isNoneEmpty(eventId)) {
             Event e = contractHelper.getEventById(eventId);
             if (e != null) {
+                log.info("Method /eventById returned {}", e.toString());
                 return e.toString();
             }
         }
+        log.info("Method /eventById returned null");
         return null;
     }
 
@@ -44,7 +48,9 @@ public class VkController {
     public String events() {
         log.info("Calling /events. No input params");
         List<Event> events = contractHelper.getAllEvents();
-        return "[" + events.stream().map(e -> e.toString()).collect(Collectors.joining(",")) + "]";
+        String res = "[" + events.stream().map(e -> e.toString()).collect(Collectors.joining(",")) + "]";
+        log.info("Method /events returned {}", res);
+        return res;
     }
 
     @RequestMapping(value = "/event")
@@ -58,9 +64,11 @@ public class VkController {
     ) {
         log.info("Calling /event. Input params: eventId={}, successSum={}, maxGuestsCount={}, presalePrice={}, salePrice={}, fundingDeadline={}, eventDate={}",
                 eventId, successSum, maxGuestsCount, presalePrice, salePrice, fundingDeadline, eventDate);
-        return contractHelper.createNewEvent(eventId, successSum, maxGuestsCount, presalePrice, salePrice,
+        boolean res = contractHelper.createNewEvent(eventId, successSum, maxGuestsCount, presalePrice, salePrice,
                 BigInteger.valueOf(LocalDate.parse(fundingDeadline).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()),
                 BigInteger.valueOf(LocalDate.parse(eventDate).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
+        log.info("Method /event returned {}", res);
+        return res;
     }
 
     @RequestMapping(value = "/payment")
@@ -69,6 +77,8 @@ public class VkController {
                            @RequestParam(value = "transactionId") String transactionId) {
         log.info("Calling /payment. Input params: eventId={}, userId={}, transactionId={}",
                 eventId, userId, transactionId);
-        return contractHelper.createNewPayment(eventId, userId, transactionId);
+        boolean res = contractHelper.createNewPayment(eventId, userId, transactionId);
+        log.info("Method /payment returned {}", res);
+        return res;
     }
 }
