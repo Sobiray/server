@@ -42,7 +42,7 @@ public class VkController {
         return "[" + events.stream().map(e -> e.toString()).collect(Collectors.joining(",")) + "]";
     }
 
-    @RequestMapping(value = "/event", method = RequestMethod.PUT)
+    @RequestMapping(value = "/event")
     public boolean event(@RequestParam(value = "eventId") String eventId,
                          @RequestParam(value = "successSum") BigInteger successSum,
                          @RequestParam(value = "maxGuestsCount") BigInteger maxGuestsCount,
@@ -56,7 +56,7 @@ public class VkController {
                 BigInteger.valueOf(LocalDate.parse(eventDate).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
     }
 
-    @RequestMapping(value = "/payment", method = RequestMethod.PUT)
+    @RequestMapping(value = "/payment")
     public boolean payment(@RequestParam(value = "eventId") String eventId,
                            @RequestParam(value = "userId") String userId,
                            @RequestParam(value = "transactionId") String transactionId) {

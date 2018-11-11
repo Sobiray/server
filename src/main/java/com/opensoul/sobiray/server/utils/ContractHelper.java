@@ -68,6 +68,19 @@ public class ContractHelper {
         }
     }
 
+//    private boolean getEventGuests(String eventId) {
+//        try {
+//            List<String> guests = contract.getEventGuestsIds(eventId).send();
+//            if (guests == null || guests.size() == 0){
+//                return new List<String>()
+//            }
+//            return guests;
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//        }
+//        return null;
+//    }
+
     public boolean createNewEvent(String eventId, BigInteger successSum, BigInteger maxGuestsCount,
                                   BigInteger presalePrice, BigInteger salePrice, BigInteger fundingDeadline, BigInteger eventDate) {
         try {
