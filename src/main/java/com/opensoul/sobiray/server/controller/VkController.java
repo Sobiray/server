@@ -3,6 +3,8 @@ package com.opensoul.sobiray.server.controller;
 import com.opensoul.sobiray.server.model.Event;
 import com.opensoul.sobiray.server.utils.ContractHelper;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,17 +18,19 @@ import java.util.stream.Collectors;
 
 @RestController
 public class VkController {
-
+    private static final Logger log = LoggerFactory.getLogger(VkController.class);
     private List<String> eventList = null;
     private ContractHelper contractHelper = new ContractHelper();
 
     @RequestMapping("/hi")
     public String hi(@RequestParam(value = "name", defaultValue = "World") String name) {
+        log.info("Calling /hi. Input params: name={}", name);
         return "{\"result\":\"" + "Hello, " + name + "!" + "\"}";
     }
 
     @RequestMapping(value = "/eventById", method = RequestMethod.GET)
     public String eventById(@RequestParam(value = "eventId") String eventId) {
+        log.info("Calling /eventById. Input params: eventId={}", eventId);
         if (StringUtils.isNoneEmpty(eventId)) {
             Event e = contractHelper.getEventById(eventId);
             if (e != null) {
@@ -38,6 +42,7 @@ public class VkController {
 
     @RequestMapping(value = "/events", method = RequestMethod.GET)
     public String events() {
+        log.info("Calling /events. No input params");
         List<Event> events = contractHelper.getAllEvents();
         return "[" + events.stream().map(e -> e.toString()).collect(Collectors.joining(",")) + "]";
     }
@@ -51,6 +56,8 @@ public class VkController {
                          @RequestParam(value = "fundingDeadline") String fundingDeadline,
                          @RequestParam(value = "eventDate") String eventDate
     ) {
+        log.info("Calling /event. Input params: eventId={}, successSum={}, maxGuestsCount={}, presalePrice={}, salePrice={}, fundingDeadline={}, eventDate={}",
+                eventId, successSum, maxGuestsCount, presalePrice, salePrice, fundingDeadline, eventDate);
         return contractHelper.createNewEvent(eventId, successSum, maxGuestsCount, presalePrice, salePrice,
                 BigInteger.valueOf(LocalDate.parse(fundingDeadline).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()),
                 BigInteger.valueOf(LocalDate.parse(eventDate).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()));
@@ -60,6 +67,8 @@ public class VkController {
     public boolean payment(@RequestParam(value = "eventId") String eventId,
                            @RequestParam(value = "userId") String userId,
                            @RequestParam(value = "transactionId") String transactionId) {
+        log.info("Calling /payment. Input params: eventId={}, userId={}, transactionId={}",
+                eventId, userId, transactionId);
         return contractHelper.createNewPayment(eventId, userId, transactionId);
     }
 }
