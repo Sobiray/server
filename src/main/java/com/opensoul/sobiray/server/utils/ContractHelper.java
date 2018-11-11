@@ -13,10 +13,10 @@ import java.util.List;
 public class ContractHelper {
     private static final Logger log = LoggerFactory.getLogger(ContractHelper.class);
 
-    private ContractAPI contractAPI;
-    private Sobiray contract;
+    private final ContractAPI contractAPI;
+    private final Sobiray contract;
 
-    public void init() {
+    public ContractHelper() {
         contractAPI = new ContractAPI();
         contract = contractAPI.getContract();
         log.info("Contract {} is loaded", contract.getContractAddress());
@@ -33,10 +33,6 @@ public class ContractHelper {
     }
 
     public Event getEventById(String eventId) {
-        if (contract == null) {
-            init();
-        }
-
         try {
             return new Event(contract.getEvent(eventId).send());
         } catch (Exception e) {
@@ -47,10 +43,6 @@ public class ContractHelper {
 
 
     public List<Event> getAllEvents() {
-        if (contract == null) {
-            init();
-        }
-
         List<Event> events = new ArrayList<>();
         try {
             BigInteger eventsLength = contract.getEventsLength().send();
@@ -67,10 +59,6 @@ public class ContractHelper {
     }
 
     public boolean createNewPayment(String eventId, String userId, String transactionId) {
-        if (contract == null) {
-            init();
-        }
-
         try {
             TransactionReceipt transactionReceipt = contract.addGuest(eventId, userId, transactionId).send();
             return true;
@@ -82,10 +70,6 @@ public class ContractHelper {
 
     public boolean createNewEvent(String eventId, BigInteger successSum, BigInteger maxGuestsCount,
                                   BigInteger presalePrice, BigInteger salePrice, BigInteger fundingDeadline, BigInteger eventDate) {
-        if (contract == null) {
-            init();
-        }
-
         try {
             TransactionReceipt transactionReceipt = contract.addEvent(eventId, successSum, maxGuestsCount,
                     presalePrice, salePrice, fundingDeadline, eventDate).send();

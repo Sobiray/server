@@ -27,18 +27,23 @@ public class ContractAPI {
         return web3j;
     }
 
-    public Credentials getCredentials() {
-        Credentials credentials = null;
-        try {
-            String walletSource = System.getProperty("walletSource", System.getenv("walletSource"));
-            String walletPassword = System.getProperty("walletPassword", System.getenv("walletPassword"));
-            log.info("walletSource: {}", walletSource);
+//    public Credentials getCredentials() {
+//        Credentials credentials = null;
+//        try {
+//            String walletSource = System.getProperty("walletSource", System.getenv("walletSource"));
+//            String walletPassword = System.getProperty("walletPassword", System.getenv("walletPassword"));
+//            log.info("walletSource: {}", walletSource);
+//
+//            credentials = WalletUtils.loadCredentials(walletPassword, walletSource);
+//            log.info("Credentials are loaded: {}", credentials.getAddress());
+//        } catch (Exception e) {
+//            log.error(e.getMessage(), e);
+//        }
+//        return credentials;
+//    }
 
-            credentials = WalletUtils.loadCredentials(walletPassword, walletSource);
-            log.info("Credentials are loaded: {}", credentials.getAddress());
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
+    public Credentials getCredentials() {
+        Credentials credentials = Credentials.create(System.getProperty("privateKey", System.getenv("privateKey")));
         return credentials;
     }
 
