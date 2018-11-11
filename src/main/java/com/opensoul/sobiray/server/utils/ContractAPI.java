@@ -4,12 +4,12 @@ import com.opensoul.sobiray.server.contract.api.Sobiray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.web3j.crypto.Credentials;
-import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
 
-import static org.web3j.tx.Contract.GAS_LIMIT;
-import static org.web3j.tx.ManagedTransaction.GAS_PRICE;
+import static org.web3j.tx.gas.DefaultGasProvider.GAS_LIMIT;
+import static org.web3j.tx.gas.DefaultGasProvider.GAS_PRICE;
+
 
 public class ContractAPI {
     private static final Logger log = LoggerFactory.getLogger(ContractAPI.class);
@@ -27,20 +27,6 @@ public class ContractAPI {
         return web3j;
     }
 
-//    public Credentials getCredentials() {
-//        Credentials credentials = null;
-//        try {
-//            String walletSource = System.getProperty("walletSource", System.getenv("walletSource"));
-//            String walletPassword = System.getProperty("walletPassword", System.getenv("walletPassword"));
-//            log.info("walletSource: {}", walletSource);
-//
-//            credentials = WalletUtils.loadCredentials(walletPassword, walletSource);
-//            log.info("Credentials are loaded: {}", credentials.getAddress());
-//        } catch (Exception e) {
-//            log.error(e.getMessage(), e);
-//        }
-//        return credentials;
-//    }
 
     public Credentials getCredentials() {
         Credentials credentials = Credentials.create(System.getProperty("privateKey", System.getenv("privateKey")));
